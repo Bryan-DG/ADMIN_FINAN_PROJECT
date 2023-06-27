@@ -11,14 +11,97 @@
 			<h2>Punto de equilibrio</h2>
 
 
+            <div id="chart">
+            </div>
+
 
 		</div>
 	</div>
 
 </div>
 <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="//cdn.jsdelivr.net/alasql/0.2/alasql.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+
+var excel = `"data.xlsx"`
+var groupByProd = `group by Producto`
+var fecha2022 = `fecha_str <= '2022-12-31'`
+var costos = 0;
+var costosTotal = 0;
+var ventas = 0;
+var ventasProd = 0;
+var compras = 0;
+var comprasProd = 0;
+var productos = 0;
+var d1,d2,c1;
+
 $(document).ready(function(){
     
+      //AlaSQL
+
+      //Costos Fijos
+      alasql.promise(`select * as costos from xlsx(${excel},{sheetid:"Costos op."})`)
+      .then((data) => {
+        costos = data      
+        costosTotal = alasql(`select SUM(Total)*12 as costos from ?`, [costos])[0].costos       
+      });
+
+      //Productos
+      alasql.promise(`select * from xlsx(${excel},{sheetid:"Productos"})`)
+      .then((data)=> productos = data)
+      .then(()=> createChart());      
+
+      //Obtener Ventas
+      //Primero las del 2022, luego agrupa por producto 
+      alasql.promise(`select * as ventas from xlsx(${excel},{sheetid:"Ventas anuales 2022"}) WHERE ${fecha2022}`)
+      .then((data) => {
+        ventas = data
+        ventasProd = alasql(`select Producto,SUM(monto) as ventas from ? ${groupByProd}`, [ventas])        
+      });
+
+      //Obtener Compras
+      //Primero las del 2022, luego agrupa por producto      
+      alasql.promise(`select * as compras from xlsx(${excel},{sheetid:"Compras 2022"}) WHERE ${fecha2022}`)
+      .then((data)=> {
+        compras = data
+        comprasProd = alasql(`select Producto, SUM(Cantidad) as Cantidad, SUM(Total) as Total FROM ? ${groupByProd}`, [compras])
+      });
+      
+
+      //Q de Productos
+
+      
+
 });
+
+function createChart(){
+
+    d1 = alasql('COLUMN OF select `Costo unitario` FROM ?', [productos]) 
+    d2 = alasql('COLUMN OF select `Precio de venta` FROM ?', [productos]) 
+    c1 = alasql('COLUMN OF select `Código`+ "-" +`Descripción` FROM ?', [productos])
+
+    // Grafico
+    var options = {
+        chart: {
+          type: 'line'
+        },
+        series: [{
+            name: "Costo unitario",
+            data: d1
+          },
+          {
+            name: "Precio de venta",
+            data: d2
+          }],
+        xaxis: {
+           categories: c1
+        }
+      }
+      
+      var chart = new ApexCharts(document.querySelector("#chart"), options);
+      
+      chart.render();
+}
 </script>
