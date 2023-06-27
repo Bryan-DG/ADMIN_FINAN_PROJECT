@@ -32,15 +32,17 @@ var costos = 0;
 var costosTotal = 0;
 var ventas = 0;
 var ventasProd = 0;
+var ventasMontoTot = 0;
+var ventasCantTot = 0;
+var porcVentasProd = 0;
+var MCUPCP = 0;
 var compras = 0;
 var comprasProd = 0;
 var productos = 0;
 var d1,d2,c1;
 
 $(document).ready(function(){
-    
-      //AlaSQL
-
+          
       //Costos Fijos
       alasql.promise(`select * as costos from xlsx(${excel},{sheetid:"Costos op."})`)
       .then((data) => {
@@ -58,8 +60,31 @@ $(document).ready(function(){
       alasql.promise(`select * as ventas from xlsx(${excel},{sheetid:"Ventas anuales 2022"}) WHERE ${fecha2022}`)
       .then((data) => {
         ventas = data
-        ventasProd = alasql(`select Producto,SUM(monto) as ventas from ? ${groupByProd}`, [ventas])        
-      });
+        ventasProd = alasql(`select Producto, SUM(Cantidad) as Cantidad, SUM(monto) as Monto from ? ${groupByProd}`, [ventas])
+        ventasMontoTot = alasql(`select SUM(Monto) as ventasMontoTot from ?`, [ventasProd])[0].ventasMontoTot // 109096.55
+        ventasCantTot = alasql(`select SUM(Cantidad) as ventasCantTot from ?`, [ventasProd])[0].ventasCantTot // 19417
+         
+        // % de Participacion/Mezcla
+        porcVentasProd = alasql(`select *, ROUND(Cantidad*100/${ventasCantTot},2) as porcVentas from ?`, [ventasProd])
+
+        // Margen de Contribución Unitario (MCU) por producto y 
+        // Margen de Contribución Ponderado (MCP) por producto
+        let MCU = `prod.[Precio de venta] - prod.[Costo unitario]`;
+        let MCP = `ROUND((${MCU}) * porcVent.porcVentas/100, 2)`;
+        MCUPCP = alasql(`SELECT prod.*, porcVent.*, ${MCU} as MCU, ${MCP} as MCP FROM ? as prod JOIN ? as porcVent ON prod.[Código] = porcVent.Producto`,[productos,porcVentasProd]);
+        
+        // Margen de Contribución Ponderado Total (MCPtot)
+        let MCPtot =  alasql(`select SUM(MCP) as MCPtot from ?`, [MCUPCP])[0].MCPtot
+        // Punto de Equilibrio (PE) en Unidades Totales
+        let PE = Math.round(costosTotal / MCPtot) // 16114
+        console.log(PE)
+
+        // Punto de equilibrio en unidades por producto
+        let PEPorc = `ROUND(MCUPCP.porcVentas * ${PE}/100,2)`;
+        let PEProd = alasql(`SELECT *, ${PEPorc} as PEPorc FROM ? as MCUPCP`,[MCUPCP]);
+        console.log(PEProd)
+
+      }); 
 
       //Obtener Compras
       //Primero las del 2022, luego agrupa por producto      
