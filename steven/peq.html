@@ -10,7 +10,6 @@
 
 			<h2>Punto de equilibrio</h2>
 
-
             <div id="chart">
             </div>
 
@@ -25,29 +24,31 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 
-var excel = `"data.xlsx"`
-var groupByProd = `group by Producto`
-var fecha2022 = `fecha_str <= '2022-12-31'`
+var excel = `"data.xlsx"`;
+var groupByProd = `group by Producto`;
+var fecha2022 = `fecha_str <= '2022-12-31'`;
 var costos = 0;
-var costosTotal = 0;
+var costFijoTot = 0;
 var ventas = 0;
 var ventasProd = 0;
 var ventasMontoTot = 0;
 var ventasCantTot = 0;
 var porcVentasProd = 0;
-var MCUPCP = 0;
+var MCUMCP = 0;
 var compras = 0;
 var comprasProd = 0;
+var comprasMontoTot = 0;
 var productos = 0;
 var d1,d2,c1;
+var tableToGraph = [];
 
 $(document).ready(function(){
           
       //Costos Fijos
       alasql.promise(`select * as costos from xlsx(${excel},{sheetid:"Costos op."})`)
       .then((data) => {
-        costos = data      
-        costosTotal = alasql(`select SUM(Total)*12 as costos from ?`, [costos])[0].costos       
+        costos = data;
+        costFijoTot = alasql(`select SUM(Total)*12 as costos from ?`, [costos])[0].costos;
       });
 
       //Productos
@@ -59,25 +60,26 @@ $(document).ready(function(){
       //Primero las del 2022, luego agrupa por producto 
       alasql.promise(`select * as ventas from xlsx(${excel},{sheetid:"Ventas anuales 2022"}) WHERE ${fecha2022}`)
       .then((data) => {
-        ventas = data
-        ventasProd = alasql(`select Producto, SUM(Cantidad) as Cantidad, SUM(monto) as Monto from ? ${groupByProd}`, [ventas])
-        ventasMontoTot = alasql(`select SUM(Monto) as ventasMontoTot from ?`, [ventasProd])[0].ventasMontoTot // 109096.55
-        ventasCantTot = alasql(`select SUM(Cantidad) as ventasCantTot from ?`, [ventasProd])[0].ventasCantTot // 19417
+        ventas = data;
+        ventasProd = alasql(`select Producto, SUM(Cantidad) as Cantidad, SUM(monto) as Monto from ? ${groupByProd}`, [ventas]);
+        ventasMontoTot = alasql(`select SUM(Monto) as ventasMontoTot from ?`, [ventasProd])[0].ventasMontoTot; // 109096.55
+        ventasCantTot = alasql(`select SUM(Cantidad) as ventasCantTot from ?`, [ventasProd])[0].ventasCantTot; // 19417
          
         // % de Participacion/Mezcla
-        porcVentasProd = alasql(`select *, ROUND(Cantidad*100/${ventasCantTot},2) as porcVentas from ?`, [ventasProd])
+        porcVentasProd = alasql(`select *, ROUND(Cantidad*100/${ventasCantTot},2) as porcVentas from ?`, [ventasProd]);
 
         // Margen de Contribución Unitario (MCU) por producto y 
         // Margen de Contribución Ponderado (MCP) por producto
         let MCU = `prod.[Precio de venta] - prod.[Costo unitario]`;
         let MCP = `ROUND((${MCU}) * porcVent.porcVentas/100, 2)`;
-        MCUPCP = alasql(`SELECT prod.*, porcVent.*, ${MCU} as MCU, ${MCP} as MCP FROM ? as prod JOIN ? as porcVent ON prod.[Código] = porcVent.Producto`,[productos,porcVentasProd]);
+        MCUMCP = alasql(`SELECT prod.*, porcVent.*, ${MCU} as MCU, ${MCP} as MCP FROM ? as prod JOIN ? as porcVent ON prod.[Código] = porcVent.Producto`,[productos,porcVentasProd]);
         
         // Margen de Contribución Ponderado Total (MCPtot)
-        let MCPtot =  alasql(`select SUM(MCP) as MCPtot from ?`, [MCUPCP])[0].MCPtot
+        let MCPtot =  alasql(`select SUM(MCP) as MCPtot from ?`, [MCUMCP])[0].MCPtot;
+        
         // Punto de Equilibrio (PE) en Unidades Totales
-        let PE = Math.round(costosTotal / MCPtot) // 16114
-        console.log(PE)
+        let PE = Math.round(costFijoTot / MCPtot); // 16114
+        console.log(PE);
 
         // Punto de equilibrio en unidades por producto
         let PEPorc = `ROUND(MCUPCP.porcVentas * ${PE}/100,2)`;
