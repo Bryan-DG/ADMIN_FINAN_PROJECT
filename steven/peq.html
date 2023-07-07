@@ -49,120 +49,130 @@ var productos = 0;
 var d1,d2,c1;
 var tableToGraph = [];
 
-$(document).ready(function(){
+(async ()=>{
           
       //Costos Fijos
-      alasql.promise(`select * as costos from xlsx(${excel},{sheetid:"Costos op."})`)
-      .then((data) => {
-        costos = data;
-        costFijoTot = alasql(`select SUM(Total)*12 as costos from ?`, [costos])[0].costos;
-      });
+      async function loadCostos() {
+        await alasql.promise(`select * as costos from xlsx(${excel},{sheetid:"Costos op."})`)
+        .then((data) => {
+            costos = data;
+            costFijoTot = alasql(`select SUM(Total)*12 as costos from ?`, [costos])[0].costos;
+        });
+      }
 
       //Productos
-      alasql.promise(`select * from xlsx(${excel},{sheetid:"Productos"})`)
-      .then((data)=> productos = data);           
+      async function loadProducts() {
+        await alasql.promise(`select * from xlsx(${excel},{sheetid:"Productos"})`)
+        .then((data)=> productos = data);   
+      }        
 
       //Obtener Compras
-      //Primero las del 2022, luego agrupa por producto      
-      alasql.promise(`select * as compras from xlsx(${excel},{sheetid:"Compras 2022"}) WHERE ${fecha2022}`)
-      .then((data)=> {
-        compras = data;
-        comprasProd = alasql(`select Producto, SUM(Cantidad) as Cantidad, ROUND(SUM(Total),0) as Total FROM ? ${groupByProd}`, [compras]);
-        comprasMontoTot = alasql(`select SUM(Total) as comprasMontoTot from ?`, [comprasProd])[0].comprasMontoTot; // 51120
-      });
-      
+      //Primero las del 2022, luego agrupa por producto
+      async function loadCompras() {      
+        await alasql.promise(`select * as compras from xlsx(${excel},{sheetid:"Compras 2022"}) WHERE ${fecha2022}`)
+        .then((data)=> {
+            compras = data;
+            comprasProd = alasql(`select Producto, SUM(Cantidad) as Cantidad, ROUND(SUM(Total),0) as Total FROM ? ${groupByProd}`, [compras]);
+            comprasMontoTot = alasql(`select SUM(Total) as comprasMontoTot from ?`, [comprasProd])[0].comprasMontoTot; // 51120
+        });
+      }
 
       //Obtener Ventas
-      //Primero las del 2022, luego agrupa por producto 
-      alasql.promise(`select * as ventas from xlsx(${excel},{sheetid:"Ventas anuales 2022"}) WHERE ${fecha2022}`)
-      .then((data) => {
-        ventas = data;
-        ventasProd = alasql(`select Producto, SUM(Cantidad) as Cantidad, SUM(monto) as Monto from ? ${groupByProd}`, [ventas]);
-        ventasMontoTot = alasql(`select SUM(Monto) as ventasMontoTot from ?`, [ventasProd])[0].ventasMontoTot; // 109096.55
-        ventasCantTot = alasql(`select SUM(Cantidad) as ventasCantTot from ?`, [ventasProd])[0].ventasCantTot; // 19417
-         
-        // % de Participacion/Mezcla
-        porcVentasProd = alasql(`select *, ROUND(Cantidad*100/${ventasCantTot},2) as porcVentas from ?`, [ventasProd]);
+      //Primero las del 2022, luego agrupa por producto
+      async function loadVentas() { 
+        await alasql.promise(`select * as ventas from xlsx(${excel},{sheetid:"Ventas anuales 2022"}) WHERE ${fecha2022}`)
+        .then((data) => {
+            ventas = data;
+            ventasProd = alasql(`select Producto, SUM(Cantidad) as Cantidad, SUM(monto) as Monto from ? ${groupByProd}`, [ventas]);
+            ventasMontoTot = alasql(`select SUM(Monto) as ventasMontoTot from ?`, [ventasProd])[0].ventasMontoTot; // 109096.55
+            ventasCantTot = alasql(`select SUM(Cantidad) as ventasCantTot from ?`, [ventasProd])[0].ventasCantTot; // 19417
+            
+            // % de Participacion/Mezcla
+            porcVentasProd = alasql(`select *, ROUND(Cantidad*100/${ventasCantTot},2) as porcVentas from ?`, [ventasProd]);
 
-        // Margen de Contribución Unitario (MCU) por producto y 
-        // Margen de Contribución Ponderado (MCP) por producto
-        let MCU = `prod.[Precio de venta] - prod.[Costo unitario]`;
-        let MCP = `ROUND((${MCU}) * porcVent.porcVentas/100, 2)`;
-        MCUMCP = alasql(`SELECT prod.*, porcVent.*, ${MCU} as MCU, ${MCP} as MCP FROM ? as prod JOIN ? as porcVent ON prod.[Código] = porcVent.Producto`,[productos,porcVentasProd]);
-        
-        // Margen de Contribución Ponderado Total (MCPtot)
-        let MCPtot =  alasql(`select SUM(MCP) as MCPtot from ?`, [MCUMCP])[0].MCPtot;
-        
-        // Punto de Equilibrio (PE) en Unidades Totales
-        PE = Math.round(costFijoTot / MCPtot); // 16114
-        console.log(PE);
+            // Margen de Contribución Unitario (MCU) por producto y 
+            // Margen de Contribución Ponderado (MCP) por producto
+            let MCU = `prod.[Precio de venta] - prod.[Costo unitario]`;
+            let MCP = `ROUND((${MCU}) * porcVent.porcVentas/100, 2)`;
+            MCUMCP = alasql(`SELECT prod.*, porcVent.*, ${MCU} as MCU, ${MCP} as MCP FROM ? as prod JOIN ? as porcVent ON prod.[Código] = porcVent.Producto`,[productos,porcVentasProd]);
+            
+            // Margen de Contribución Ponderado Total (MCPtot)
+            let MCPtot =  alasql(`select SUM(MCP) as MCPtot from ?`, [MCUMCP])[0].MCPtot;
+            
+            // Punto de Equilibrio (PE) en Unidades Totales
+            PE = Math.round(costFijoTot / MCPtot); // 16114
+            console.log(PE);
 
-        // Punto de equilibrio en unidades por producto
-        //Razon de Venta por producto para el PE
-        //Q de Productos
-        let PEPorc = `ROUND(MCUMCP.porcVentas * ${PE}/100)`;
-        let RazonCantVent = alasql(`SELECT *, ${PEPorc} as RazonCantVent, ${PEPorc}*MCUMCP.[Precio de venta] as RazonMontoVent, ROUND(${PEPorc}*MCUMCP.[Costo unitario], 2) as RazonMontoCompra FROM ? as MCUMCP`,[MCUMCP]);
-        console.log(RazonCantVent);
-        
-        //Total Monto Ventas en PE
-        let PEMontoTotalVent = alasql(`select SUM(RazonMontoVent) as PEMontoTotalVent FROM ?`, [RazonCantVent])[0].PEMontoTotalVent;
-        console.log(PEMontoTotalVent);
+            // Punto de equilibrio en unidades por producto
+            //Razon de Venta por producto para el PE
+            //Q de Productos
+            let PEPorc = `ROUND(MCUMCP.porcVentas * ${PE}/100)`;
+            let RazonCantVent = alasql(`SELECT *, ${PEPorc} as RazonCantVent, ${PEPorc}*MCUMCP.[Precio de venta] as RazonMontoVent, ROUND(${PEPorc}*MCUMCP.[Costo unitario], 2) as RazonMontoCompra FROM ? as MCUMCP`,[MCUMCP]);
+            console.log(RazonCantVent);
+            
+            //Total Monto Ventas en PE
+            let PEMontoTotalVent = alasql(`select SUM(RazonMontoVent) as PEMontoTotalVent FROM ?`, [RazonCantVent])[0].PEMontoTotalVent;
+            console.log(PEMontoTotalVent);
 
-        //Total Monto Compras en PE
-        let PEMontoTotalCompra = alasql(`select SUM(RazonMontoCompra) as PEMontoTotalCompra FROM ?`, [RazonCantVent])[0].PEMontoTotalCompra;
-        console.log(PEMontoTotalCompra);
+            //Total Monto Compras en PE
+            let PEMontoTotalCompra = alasql(`select SUM(RazonMontoCompra) as PEMontoTotalCompra FROM ?`, [RazonCantVent])[0].PEMontoTotalCompra;
+            console.log(PEMontoTotalCompra);
 
 
-        //Tabla con datos para grafica final
-        // Calculos para 2022
-        let CostTot = comprasMontoTot + costFijoTot;
-        let Util = ventasMontoTot - CostTot;
+            //Tabla con datos para grafica final
+            // Calculos para 2022
+            let CostTot = comprasMontoTot + costFijoTot;
+            let Util = ventasMontoTot - CostTot;
 
-        //Calculos para PE
-        let PECostTot = PEMontoTotalCompra+costFijoTot;
+            //Calculos para PE
+            let PECostTot = PEMontoTotalCompra+costFijoTot;
 
-        //Calculos para 2023 (optimistas)
-        let cantVent = 30000;
-        let PEPorc2023 = `ROUND(MCUMCP.porcVentas * ${cantVent}/100)`;
-        let RazonCantVent2023 = alasql(`SELECT *, ${PEPorc2023} as RazonCantVent, ${PEPorc2023}*MCUMCP.[Precio de venta] as RazonMontoVent, ROUND(${PEPorc2023}*MCUMCP.[Costo unitario], 2) as RazonMontoCompra FROM ? as MCUMCP`,[MCUMCP]);
-        
-        console.log(RazonCantVent2023);
+            //Calculos para 2023 (optimistas)
+            let cantVent = 30000;
+            let PEPorc2023 = `ROUND(MCUMCP.porcVentas * ${cantVent}/100)`;
+            let RazonCantVent2023 = alasql(`SELECT *, ${PEPorc2023} as RazonCantVent, ${PEPorc2023}*MCUMCP.[Precio de venta] as RazonMontoVent, ROUND(${PEPorc2023}*MCUMCP.[Costo unitario], 2) as RazonMontoCompra FROM ? as MCUMCP`,[MCUMCP]);
+            
+            console.log(RazonCantVent2023);
 
-        //Total Monto Ventas en 2023
-        let MontoTotalVent2023 = alasql(`select SUM(RazonMontoVent) as MontoTotalVent2023 FROM ?`, [RazonCantVent2023])[0].MontoTotalVent2023;
-        console.log(MontoTotalVent2023);
+            //Total Monto Ventas en 2023
+            let MontoTotalVent2023 = alasql(`select SUM(RazonMontoVent) as MontoTotalVent2023 FROM ?`, [RazonCantVent2023])[0].MontoTotalVent2023;
+            console.log(MontoTotalVent2023);
 
-        //Total Monto Compras en 2023
-        let MontoTotalCompra2023 = alasql(`select SUM(RazonMontoCompra) as MontoTotalCompra2023 FROM ?`, [RazonCantVent2023])[0].MontoTotalCompra2023;
-        console.log(MontoTotalCompra2023);
+            //Total Monto Compras en 2023
+            let MontoTotalCompra2023 = alasql(`select SUM(RazonMontoCompra) as MontoTotalCompra2023 FROM ?`, [RazonCantVent2023])[0].MontoTotalCompra2023;
+            console.log(MontoTotalCompra2023);
 
-        let CostTot2023 = MontoTotalCompra2023+costFijoTot;
+            let CostTot2023 = MontoTotalCompra2023+costFijoTot;
 
-        tableToGraph = [
-            {
-                CantVent: 0, MontVent: 0, CostVar:0, CostFijo: costFijoTot, CostTot: costFijoTot, Util: 0 - costFijoTot 
-            },
-            //Entrada de valores de PE
-            {
-                CantVent: PE, MontVent: PEMontoTotalVent, CostVar:PEMontoTotalCompra, CostFijo: costFijoTot, CostTot: PECostTot, Util: PEMontoTotalVent-PECostTot
-            },
-            //Valores de 2022
-            {
-                CantVent: ventasCantTot, MontVent: ventasMontoTot, CostVar: comprasMontoTot, CostFijo: costFijoTot, CostTot: CostTot, Util: Util
-            },
-            //Valores optimistas 2023
-            {
-                CantVent: cantVent, MontVent: MontoTotalVent2023, CostVar:MontoTotalCompra2023, CostFijo: costFijoTot, CostTot: CostTot2023, Util: MontoTotalVent2023-CostTot2023
-            },
-        ];
+            tableToGraph = [
+                {
+                    CantVent: 0, MontVent: 0, CostVar:0, CostFijo: costFijoTot, CostTot: costFijoTot, Util: 0 - costFijoTot 
+                },
+                //Entrada de valores de PE
+                {
+                    CantVent: PE, MontVent: PEMontoTotalVent, CostVar:PEMontoTotalCompra, CostFijo: costFijoTot, CostTot: PECostTot, Util: PEMontoTotalVent-PECostTot
+                },
+                //Valores de 2022
+                {
+                    CantVent: ventasCantTot, MontVent: ventasMontoTot, CostVar: comprasMontoTot, CostFijo: costFijoTot, CostTot: CostTot, Util: Util
+                },
+                //Valores optimistas 2023
+                {
+                    CantVent: cantVent, MontVent: MontoTotalVent2023, CostVar:MontoTotalCompra2023, CostFijo: costFijoTot, CostTot: CostTot2023, Util: MontoTotalVent2023-CostTot2023
+                },
+            ];
 
-        console.log(tableToGraph);
+            //console.log(tableToGraph);
 
-      })
-      .then(()=> createChart());      
-      
+        })
+        .then(()=> createChart());      
+      }
 
-});
+      await loadCostos();
+      await loadProducts();
+      await loadCompras();
+      await loadVentas();
+})();
 
 function createChart(){
 
