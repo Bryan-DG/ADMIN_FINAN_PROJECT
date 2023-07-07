@@ -245,7 +245,7 @@ function createChart(){
             },
             itemMargin: {
                 horizontal: 10,
-                vertical: 15
+                vertical: 30
             },
             onItemClick: {
                 toggleDataSeries: true
@@ -257,11 +257,12 @@ function createChart(){
         xaxis: {
            type: 'numeric',
            categories: [0, PE, PE2022, PE2023],
-           decimalsInFloat: 2,
+           decimalsInFloat: 0,
+           tickPlacement: 'on',
            title: {
             text: "Unidades Totales Vendidas",
             offsetX: 0,
-            offsetY: 0,
+            offsetY: 20,
             style: {
                 color: '#000000',
                 fontSize: '1em',
@@ -287,7 +288,19 @@ function createChart(){
            },
         },
         dataLabels: {
-          enabled: false
+          enabled: true,
+          //textAnchor: 'middle',
+          //offsetX: 0,
+          formatter: function(val, opt) {
+            //console.log('formatter starts');
+            //console.log(val);
+            if (val == tableToGraph[1].MontVent){ //val == 90538.05
+              //console.log(opt);
+              //console.log('PE return');
+              return PE;
+            }
+            //return val;
+          }
         },
         colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800', '#000000'],
         annotations: {
