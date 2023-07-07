@@ -255,6 +255,7 @@ function createChart(){
             },
         },
         xaxis: {
+           type: 'numeric',
            categories: [0, PE, PE2022, PE2023],
            decimalsInFloat: 2,
            title: {
@@ -284,6 +285,9 @@ function createChart(){
                 cssClass: 'apexcharts-yaxis-label',
             }
            },
+        },
+        dataLabels: {
+          enabled: false
         },
         colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800', '#000000'],
         annotations: {
