@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flujo de Caja</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      align-content: center;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: left;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f9fc;
+      font-weight: bold;
+    }
+
+    td:nth-child(odd) {
+      background-color: #f9f9f9;
+    }
+
+    td:nth-child(even) {
+      background-color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Flujo de Caja</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Descripción</th>
+          <th>Enero</th>
+          <th>Febrero</th>
+          <th>Marzo</th>
+          <th>Abril</th>
+          <th>Mayo</th>
+          <th>Junio</th>
+          <th>Julio</th>
+          <th>Agosto</th>
+          <th>Septiembre</th>
+          <th>Octubre</th>
+          <th>Noviembre</th>
+          <th>Diciembre</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Saldo de Apertura</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Ingreso de Efectivo</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Ventas</td>
+          <td>7,760.55</td>
+          <td>8,814.90</td>
+          <td>8,594.25</td>
+          <td>10,510.20</td>
+          <td>8,822.95</td>
+          <td>10,672.65</td>
+          <td>10,735.80</td>
+          <td>8,784.20</td>
+          <td>8,277.15</td>
+          <td>10,213.45</td>
+          <td>8,143.80</td>
+          <td>7,766.65</td>
+        </tr>
+        <tr>
+          <td>Total de Ingresos</td>
+          <td>7,760.55</td>
+          <td>8,814.90</td>
+          <td>8,594.25</td>
+          <td>10,510.20</td>
+          <td>8,822.95</td>
+          <td>10,672.65</td>
+          <td>10,735.80</td>
+          <td>8,784.20</td>
+          <td>8,277.15</td>
+          <td>10,213.45</td>
+          <td>8,143.80</td>
+          <td>7,766.65</td>
+        </tr>
+        <tr>
+          <td>Egreso de Efectivo</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="comprasRow">
+          <td>Compras</td>
+          <td>4,260.00</td>
+          <td>2,130.00</td>
+          <td>6,390.00</td>
+          <td>4,260.00</td>
+          <td>4,260.00</td>
+          <td>4,260.00</td>
+          <td>4,260.00</td>
+          <td>4,260.00</td>
+          <td>4,260.00</td>
+          <td>4,260.00</td>
+          <td>4,260.00</td>
+          <td>4,260.00</td>
+        </tr>
+        <tr id="serviciosVariosRow">
+          <td>Servicios Varios</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="totalEgresosRow">
+          <td>Total de Egresos</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Flujo de Caja</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Saldo Cierre</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var serviciosVariosRow = document.getElementById('serviciosVariosRow');
+      var serviciosVariosCells = serviciosVariosRow.getElementsByTagName('td');
+
+      // Rellenar fila "Servicios Varios"
+      for (var i = 1; i < serviciosVariosCells.length; i++) {
+        serviciosVariosCells[i].textContent = "4,700.00";
+      }
+
+      // Rellenar fila "Total de Egresos"
+      var comprasRow = document.getElementById('comprasRow');
+      var comprasCells = comprasRow.getElementsByTagName('td');
+      var totalEgresosRow = document.getElementById('totalEgresosRow');
+      var totalEgresosCells = totalEgresosRow.getElementsByTagName('td');
+
+      for (var i = 1; i < totalEgresosCells.length; i++) {
+        var comprasValue = parseFloat(comprasCells[i].textContent.replace(/,/g, ''));
+        var serviciosVariosValue = parseFloat(serviciosVariosCells[i].textContent.replace(/,/g, ''));
+        var totalEgresosValue = comprasValue + serviciosVariosValue;
+        totalEgresosCells[i].textContent = formatCurrency(totalEgresosValue);
+      }
+    });
+
+    function formatCurrency(value) {
+      return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+  </script>
+</body>
+</html>
