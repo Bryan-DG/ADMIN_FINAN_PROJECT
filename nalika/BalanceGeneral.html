@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balance General</title>
+    <link rel="stylesheet" href="balance.css">
+    
+</head>
+<body>
+    <div class="container">
+
+        <form>
+            <div style="text-align: center; line-height: 2pt; margin-top: 2%;">
+            <div><h1>SALSAS CAMILLE</h1></div>
+            <h2>BALANCE GENERAL</h2>
+            <div><h3>Que finaliza el 31 de diciembre de 2022</h3></div>
+            <div class="mt-20 scroll-table">
+            </div>
+            
+            <table class="table w-100" id="generator-table" style="margin-left: 25%; margin-top: 0%;">
+  <thead>
+    <tr>
+        <th class="table-account table-header text-right"><h3 class="font-normal"> Codigos </h3></th>
+      <th class="table-account table-header"><h3 class="font-normal"> Cuentas </h3></th>
+      <th class="text-right table-account table-header"><h3 class="font-normal"> Totales ($)</h3></th>
+    </tr>
+  </thead>
+  <tbody id="table-assets"><tr><td class="table-account font-header font-weight-500" ><h4 style="text-align: left;">ACTIVOS (1000)</h4></td></tr>
+  </tr>
+  <td><p class="subtitulos">Activos Corrientes</p></td>
+    <tr>
+        <td class="table-account text-right"><input type="text" class="text-right" value="" onchange="setValue(this, 2, 'assets', 'account_code')"></td>
+        <td class="table-account">
+          <a class="plus-icons no-print" onclick="addRow(2, 'assets')"></a>
+          <input type="text" value="Efectivo" onchange="setValue(this, 2, 'assets', 'account_name')">
+        </td>
+        <td class="text-right">
+          <input type="number" class="text-right font-variant" id="actvc1" value="0" placeholder="0.00" onchange="setValue(this, 2, 'assets', 'value')">
+          <a class="delete-row no-print" onclick="deleteTableRow(2, 'assets', false)"></a>
+        </td>
+      </tr>
+      <tr>
+        <td class="table-account text-right"><input type="text" class="text-right" value="" onchange="setValue(this, 3, 'assets', 'account_code')"></td>
+    
+        <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(3, 'assets')"></a>
+            <input type="text" value="Cuentas por Cobrar" onchange="setValue(this, 3, 'assets', 'account_name')">
+          </td>
+          <td class="text-right">
+          <input type="number" class="text-right font-variant" id="actvc2" value="0" placeholder="0.00" onchange="setValue(this, 3, 'assets', 'value')">
+          <a class="delete-row no-print" onclick="deleteTableRow(3, 'assets', true)"></a>
+        </td>
+      </tr>
+      <tr>
+        <td class="table-account text-right"><input type="text" class="text-right" value="" onchange="setValue(this, 4, 'assets', 'account_code')"></td>
+        
+        <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(4, 'assets')"></a>
+            <input type="text" value="Inventario" onchange="setValue(this, 4, 'assets', 'account_name')">
+          </td>
+          <td class="text-right">
+          <input type="number" class="text-right font-variant" id="actvc3" value="0" placeholder="0.00" onchange="setValue(this, 4, 'assets', 'value')">
+          <a class="delete-row no-print" onclick="deleteTableRow(4, 'assets', true)"></a>
+        </td>
+      </tr>
+      <tr>
+        <td class="table-account font-weight-600">Total de Activos Corrientes</td><td></td><td class="text-right">
+          <span>$</span>
+          <input type="number" class="text-right total font-variant" id="totalactvc" value="0" placeholder="0.00" readonly="">
+        </td>
+      </tr>
+      <br>
+      <td><p class="subtitulos">Activos Fijos</p></td><br>
+      <tr>
+        <td class="table-account text-right"><input type="text" class="text-right" value="" onchange="setValue(this, 7, 'assets', 'account_code')"></td>
+        <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(7, 'assets')"></a>
+            <input type="text" value="Mobilario" onchange="setValue(this, 7, 'assets', 'account_name')">
+          </td>
+        <td class="text-right">
+          <input type="number" class="text-right font-variant" id="actvf1" value="0" placeholder="0.00" onchange="setValue(this, 7, 'assets', 'value')">
+        <a class="delete-row no-print" onclick="deleteTableRow(7, 'assets', false)"></a>
+        </td>
+      </tr>
+      <tr>
+        <td class="table-account text-right"><input type="text" class="text-right" value="" onchange="setValue(this, 8, 'assets', 'account_code')"></td>
+        <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(8, 'assets')"></a>
+            <input type="text" value="Equipos de Oficina" onchange="setValue(this, 8, 'assets', 'account_name')">
+          </td>
+          <td class="text-right">
+          <input type="number" class="text-right font-variant" id="actvf2" value="0" placeholder="0.00" onchange="setValue(this, 8, 'assets', 'value')">
+          <a class="delete-row no-print" onclick="deleteTableRow(8, 'assets', true)"></a>
+        </td>
+      </tr>
+      <tr>
+        <td class="table-account text-right"><input type="text" class="text-right" value="" onchange="setValue(this, 9, 'assets', 'account_code')"></td>
+        <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(9, 'assets')"></a>
+            <input type="text" value="Vehiculo" onchange="setValue(this, 9, 'assets', 'account_name')">
+          </td><td class="text-right">
+          <input type="number" class="text-right font-variant" id="actvf3" value="0" placeholder="0.00" onchange="setValue(this, 9, 'assets', 'value')">
+          <a class="delete-row no-print" onclick="deleteTableRow(9, 'assets', true)"></a>
+        </td>
+      </tr>
+      <tr>
+        <td class="table-account font-weight-600">Total de Activos Fijos Brutos</td><td></td><td class="text-right">
+          <span>$</span>
+          <input type="number" class="text-right total font-variant" id="totalactvf" value="0" placeholder="0.00" readonly="">
+        </td>
+      </tr><br>
+      <tr>
+        <td class="table-account text-right"><input type="text" class="text-right" value="" onchange="setValue(this, 7, 'assets', 'account_code')"></td>
+        <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(7, 'assets')"></a>
+            <input type="text" value="Depreciación Acumulada" onchange="setValue(this, 7, 'assets', 'account_name')">
+          </td>
+        <td class="text-right">
+          <input type="number" class="text-right font-variant" id="deprec" value="0" placeholder="0.00" onchange="setValue(this, 7, 'assets', 'value')">
+        <a class="delete-row no-print" onclick="deleteTableRow(7, 'assets', false)"></a>
+        </td>
+      </tr>
+      <tr>
+        <td class="table-account font-weight-600">Total de Activos Fijos</td><td></td><td class="text-right">
+          <span>$</span>
+          <input type="number" class="text-right total font-variant" id="totalactvfneto" value="0" placeholder="0.00" readonly="">
+        </td>
+      </tr>
+      <tr class="section-line"><td colspan="3"><hr></td></tr>
+      <tr>
+        <td class="table-account font-weight-600">Total de Activos</td><td></td><td class="text-right">
+          <span>$</span>
+          <input type="number" class="text-right total font-variant" id="totalactv" value="0" placeholder="0.00" readonly="">
+        </td>
+      </tr>
+      <tr class="section-line"><td colspan="3"><hr></td></tr></tbody><br><br>
+      
+
+      <tbody id="table-liabilities"><tr><td class="table-account font-header font-weight-700"><h4 style="text-align: left;">PASIVOS (2000)</h4></td></tr>
+          <td><p class="subtitulos">Pasivos Corrientes</p></td>
+      <tr>
+        <td class="table-account text-right"><input type="text" class="text-right" value="" onchange="setValue(this, 2, 'liabilities', 'account_code')"></td>
+        <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(2, 'liabilities')"></a>
+            <input type="text" value="Cuentas por Pagar" onchange="setValue(this, 2, 'liabilities', 'account_name')">
+          </td><td class="text-right">
+          <input type="number" class="text-right font-variant" id="pasv1" value="0" placeholder="0.00" onchange="setValue(this, 2, 'liabilities', 'value')">
+          <a class="delete-row no-print" onclick="deleteTableRow(2, 'liabilities', false)"></a>
+        </td>
+      </tr>
+      <tr>
+        <td class="table-account text-right"><input type="text" class="text-right" value="" onchange="setValue(this, 3, 'liabilities', 'account_code')"></td>
+        
+        <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(3, 'liabilities')"></a>
+            <input type="text" value="Prestamos a Corto Plazo" onchange="setValue(this, 3, 'liabilities', 'account_name')">
+          </td>
+          <td class="text-right">
+          <input type="number" class="text-right font-variant" id="pasv2" value="0" placeholder="0.00" onchange="setValue(this, 3, 'liabilities', 'value')">
+          <a class="delete-row no-print" onclick="deleteTableRow(3, 'liabilities', true)"></a>
+        </td>
+      </tr>
+      <tr>
+        <td class="table-account text-right"><input type="text" class="text-right" value="" onchange="setValue(this, 5, 'liabilities', 'account_code')"></td>
+
+        <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(5, 'liabilities')"></a>
+            <input type="text" value="Prestamos a Largo Plazo" onchange="setValue(this, 5, 'liabilities', 'account_name')">
+          </td><td class="text-right">
+          <input type="number" class="text-right font-variant" id="pasv3" value="0" placeholder="0.00" onchange="setValue(this, 5, 'liabilities', 'value')">
+          <a class="delete-row no-print" onclick="deleteTableRow(5, 'liabilities', false)"></a>
+        </td>
+      </tr>
+      <tr>
+        <br><td class="table-account font-weight-600">Total de Pasivos Corrientes</td>
+        <td></td><td class="text-right">
+          <span>$</span>
+          <input type="number" class="text-right total font-variant" id="totalpasvs" value="0" placeholder="0.00" readonly="">
+        </td>
+      </tr><tr class="section-line"><td colspan="3"><hr></td></tr></tbody><br><br>
+      
+      
+      <tbody id="table-equity"><tr><td class="table-account font-header font-weight-700"><h4 style="text-align: left;">PATRIMONIO (3000)</h4></td></tr>
+      <tr>
+        <td class="table-account text-right"><input type="text" class="text-right" value="" onchange="setValue(this, 1, 'equity', 'account_code')"></td>
+        <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(1, 'equity')"></a>
+            <input type="text" value="Patrimonio" onchange="setValue(this, 1, 'equity', 'account_name')">
+          </td>
+          <td class="text-right">
+          <input type="number" class="text-right font-variant" id="patr" value="0" placeholder="0.00" onchange="setValue(this, 1, 'equity', 'value')">
+          <a class="delete-row no-print" onclick="deleteTableRow(1, 'equity', false)"></a>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="table-account font-weight-600">Total de Patrimonio</td><td></td><td class="text-right">
+          <span>$</span>
+          <input type="number" class="text-right total font-variant" id="totalpatr" value="0" placeholder="0.00" readonly="">
+        </td>
+      </tr>
+      <tr class="section-line"><td colspan="3"><hr></td></tr></tbody>
+      <tbody id="table-totalLiabilityEquity">
+      <tr>
+        <td class="table-account font-weight-600">Total de Pasivos &amp; Patrimonio</td><td></td><td class="text-right">
+          <span>$</span>
+          <input type="number" class="text-right total font-variant" id="totalpnp" value="0" placeholder="0.00" readonly="">
+        </td>
+      </tr><tr class="section-line"><td colspan="3"><hr></td></tr></tbody>
+    </table>
+
+    
+            </div>
+            <div class="no-print w-35 align-center" style="text-align: center; margin-top: 2%;">
+              <button type="button" id="btnresult" class="print-btn" onclick="generar()" value="Calcular">
+                
+                  
+                    Calcular Balance
+                  
+                
+              </button>
+            </div>
+          </form>
+
+    </div>
+
+    <script>
+      function generar(){
+      var actc1 = Number(document.getElementById('actvc1').value);
+      var actc2 = Number(document.getElementById('actvc2').value);
+      var actc3 = Number(document.getElementById('actvc3').value);
+
+      var actcresul = actc1 + actc2 + actc3;
+
+      var actf1 = Number(document.getElementById('actvf1').value);
+      var actf2 = Number(document.getElementById('actvf2').value);
+      var actf3 = Number(document.getElementById('actvf3').value);
+
+      var actfresul = actf1 + actf2 + actf3;
+      
+
+      var depr = Number(document.getElementById('deprec').value);
+      var actfbruto = actfresul;
+      //var actfbruto = Number(document.getElementById('totalactvf').value);
+
+      var depreresult = actfbruto - depr;
+
+      var totalactc = actcresul;
+      //var totalactc = Number(document.getElementById('totalactvc').value);
+      var totalactf = depreresult;
+      //var totalactf = Number(document.getElementById('totalactvfneto').value);
+
+      var totalact = totalactc + totalactf;
+
+      document.getElementById('totalactvc').value = actcresul;
+      document.getElementById('totalactvf').value = actfresul;
+      document.getElementById('totalactvfneto').value = depreresult;
+      document.getElementById('totalactv').value = totalact;
+
+      var pas1 = Number(document.getElementById('pasv1').value);
+      var pas2 = Number(document.getElementById('pasv2').value);
+      var pas3 = Number(document.getElementById('pasv3').value);
+
+      var pasresul = pas1 + pas2 + pas3;
+
+      document.getElementById('totalpasvs').value = pasresul;
+
+      var pat = Number(document.getElementById('patr').value);
+
+      var patresul = pat;
+
+      document.getElementById('totalpatr').value = patresul;
+
+      var pnpresul = pasresul + patresul;
+
+      document.getElementById('totalpnp').value = pnpresul;
+      }
+
+    </script>
+</body>
+</html>

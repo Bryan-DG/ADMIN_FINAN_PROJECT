@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flujo de Caja</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      align-content: center;
+    }
+
+    .container {
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: left;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f9fc;
+      font-weight: bold;
+    }
+
+    td:nth-child(odd) {
+      background-color: #f9f9f9;
+    }
+
+    td:nth-child(even) {
+      background-color: #ffffff;
+    }
+
+    .positive {
+      color: green;
+    }
+
+    .negative {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Flujo de Caja</h1>
+    <table id="tablaFlujoCaja">
+      <thead>
+        <tr>
+          <th>Descripción</th>
+          <th>Enero</th>
+          <th>Febrero</th>
+          <th>Marzo</th>
+          <th>Abril</th>
+          <th>Mayo</th>
+          <th>Junio</th>
+          <th>Julio</th>
+          <th>Agosto</th>
+          <th>Septiembre</th>
+          <th>Octubre</th>
+          <th>Noviembre</th>
+          <th>Diciembre</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Saldo de Apertura</td>
+          <td>0</td>
+          <td>-1199.45</td>
+          <td>785.45</td>
+          <td>-1710.3</td>
+          <td>-160.1</td>
+          <td>-297.15</td>
+          <td>1415.5</td>
+          <td>3191.3</td>
+          <td>3015.5</td>
+          <td>2332.65</td>
+          <td>3586.1</td>
+          <td>2769.9</td>
+        </tr>
+        <tr>
+          <td>Ingreso de Efectivo</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Ventas</td>
+          <td>7760.55</td>
+          <td>8814.90</td>
+          <td>8594.25</td>
+          <td>10510.20</td>
+          <td>8822.95</td>
+          <td>10672.65</td>
+          <td>10735.80</td>
+          <td>8784.20</td>
+          <td>8277.15</td>
+          <td>10213.45</td>
+          <td>8143.80</td>
+          <td>7766.65</td>
+        </tr>
+        <tr id="totalIngresosRow">
+          <td>Total de Ingresos</td>
+          <td>7760.55</td>
+          <td>8814.90</td>
+          <td>8594.25</td>
+          <td>10510.20</td>
+          <td>8822.95</td>
+          <td>10672.65</td>
+          <td>10735.80</td>
+          <td>8784.20</td>
+          <td>8277.15</td>
+          <td>10213.45</td>
+          <td>8143.80</td>
+          <td>7766.65</td>
+        </tr>
+        <tr>
+          <td>Egreso de Efectivo</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="comprasRow">
+          <td>Compras</td>
+          <td>4260.00</td>
+          <td>2130.00</td>
+          <td>6390.00</td>
+          <td>4260.00</td>
+          <td>4260.00</td>
+          <td>4260.00</td>
+          <td>4260.00</td>
+          <td>4260.00</td>
+          <td>4260.00</td>
+          <td>4260.00</td>
+          <td>4260.00</td>
+          <td>4260.00</td>
+        </tr>
+        <tr id="serviciosVariosRow">
+          <td>Servicios Varios</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="totalEgresosRow">
+          <td>Total de Egresos</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="flujoCajaRow">
+          <td>Flujo de Caja</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Saldo Cierre</td>
+          <td>-1199.45</td>
+          <td>785.45</td>
+          <td>-1710.3</td>
+          <td>-160.1</td>
+          <td>-297.15</td>
+          <td>1415.5</td>
+          <td>3191.3</td>
+          <td>3015.5</td>
+          <td>2332.65</td>
+          <td>3586.1</td>
+          <td>2769.9</td>
+          <td>1576.55</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var serviciosVariosRow = document.getElementById('serviciosVariosRow');
+      var serviciosVariosCells = serviciosVariosRow.getElementsByTagName('td');
+
+      // Rellenar fila "Servicios Varios"
+      for (var i = 1; i < serviciosVariosCells.length; i++) {
+        serviciosVariosCells[i].textContent = "4700.00";
+      }
+
+      // Rellenar fila "Total de Egresos"
+      var comprasRow = document.getElementById('comprasRow');
+      var comprasCells = comprasRow.getElementsByTagName('td');
+      var totalEgresosRow = document.getElementById('totalEgresosRow');
+      var totalEgresosCells = totalEgresosRow.getElementsByTagName('td');
+
+      for (var i = 1; i < totalEgresosCells.length; i++) {
+        var comprasValue = parseFloat(comprasCells[i].textContent.replace(/,/g, ''));
+        var serviciosVariosValue = parseFloat(serviciosVariosCells[i].textContent.replace(/,/g, ''));
+        var totalEgresosValue = comprasValue + serviciosVariosValue;
+        totalEgresosCells[i].textContent = formatDecimal(totalEgresosValue);
+      }
+
+      // Rellenar fila "Total de Ingresos"
+      var totalIngresosRow = document.getElementById('totalIngresosRow');
+      var totalIngresosCells = totalIngresosRow.getElementsByTagName('td');
+
+      // Rellenar fila "Flujo de Caja"
+      var flujoCajaRow = document.getElementById('flujoCajaRow');
+      var flujoCajaCells = flujoCajaRow.getElementsByTagName('td');
+
+      var valoresFlujoCaja = [-1199.45, 785.45, -1710.3, -160.1, -297.15, 1415.5, 3191.3, 3015.5, 2332.65, 3586.1, 2769.9, 1576.55];
+
+      for (var i = 1; i < flujoCajaCells.length; i++) {
+        var totalIngresosValue = parseFloat(totalIngresosCells[i].textContent.replace(/,/g, ''));
+        var totalEgresosValue = parseFloat(totalEgresosCells[i].textContent.replace(/,/g, ''));
+        var flujoCajaValue = totalIngresosValue - totalEgresosValue;
+        
+        if (isNaN(flujoCajaValue)) {
+          flujoCajaValue = valoresFlujoCaja[i - 1];
+        }
+
+        flujoCajaCells[i].textContent = formatCurrency(flujoCajaValue).replace(',', '.');
+      }
+      
+      // Pintar números con guion en rojo y sin guion en verde
+      var tabla = document.getElementById('tablaFlujoCaja');
+      var filas = tabla.getElementsByTagName('tr');
+
+      for (var i = 0; i < filas.length; i++) {
+        var celdas = filas[i].getElementsByTagName('td');
+
+        for (var j = 1; j < celdas.length; j++) {
+          var contenido = celdas[j].textContent.trim();
+          if (contenido !== "") {
+            if (contenido.includes("-")) {
+              celdas[j].classList.add('negative');
+            } else {
+              celdas[j].classList.add('positive');
+            }
+          }
+        }
+      }
+    });
+
+    function formatDecimal(value) {
+      return value.toFixed(2);
+    }
+
+    function formatCurrency(value) {
+      return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+  </script>
+</body>
+</html>

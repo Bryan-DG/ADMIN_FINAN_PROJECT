@@ -1,0 +1,60 @@
+<!doctype html>
+<title>Calculadora Financiera</title>
+<meta name="viewport" content="width=device-width">
+<link href="calculadora.css" rel="stylesheet" type="text/css">
+
+
+<div id="container">
+    <div class="block">
+		<div class="wrap">
+            <a href="index.html">
+                <button class="btn">Atrás</button>
+            </a>
+
+			<h1 class="titulo" style="text-align: center;">Calculadora Financiera</h1>
+			<div class="calculator-amortization">
+				<div class="thirty form">
+                    <div class="accrue-field-amount">
+                        <p><label class="mp">Monto Préstamo:</label><input type="text" class="amount" value="40,000"></p>
+                    </div>
+                    <div class="accrue-field-rate">
+                        <p><label class="tasa">Tasa (Anual):</label><input type="text" class="rate" value="8%"></p>
+                    </div>
+                    <div class="accrue-field-term">
+                        <p><label class="plazo">Plazo:</label><input type="text" class="term" value="10y"><small>Formato: 12m, 36m, 3y, 7y</small><br/>
+                            <small>Leyenda: (m) Meses, (y) Años</small>
+                        </p>
+                        <p></p>
+                    </div>
+                    </div>
+
+				<div class="seventy">
+					<p><label class="res">Resultados:</label></p>
+					<div class="results"></div>
+                    <table class=""accrue-amortization>
+                    </table>
+				</div>
+
+				<div class="clear"></div>
+			</div>
+
+
+		</div>
+	</div>
+
+</div>
+
+</div>
+<script src="Tabbla.js"></script>
+<script src="Tabla2.js"></script>
+<script>
+$(document).ready(function(){
+	$(".calculator").accrue();
+
+    // set up the amortization schedule calculator
+	$(".calculator-amortization").accrue({
+		mode: "amortization"
+	});
+});
+</script>
+

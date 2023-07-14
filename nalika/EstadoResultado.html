@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado de Resultado</title>
+</head>
+<body>
+    
+    <div class="container">
+
+        <form>
+            <div style="text-align: center; line-height: 2pt; margin-top: 2%;">
+            <div><h1>SALSAS CAMILLE</h1></div>
+            <h2>ESTADO DE RESULTADOS</h2>
+            <div><h3>al 31 de diciembre de 2022</h3></div>
+            <div class="mt-20 scroll-table">
+            </div>
+            
+            <table class="table w-100" id="generator-table" style="margin-left: 25%; margin-top: 0%;">
+  <thead>
+    <!--tr>
+        <th class="table-account table-header text-right"><h3 class="font-normal"> Codigos </h3></th>
+      <th class="table-account table-header"><h3 class="font-normal"> Cuentas </h3></th>
+      <th class="text-right table-account table-header"><h3 class="font-normal"> Totales ($)</h3></th>
+    </tr-->
+  </thead>
+  <!--tbody id="table-assets"><tr><td class="table-account font-header font-weight-500" ><h4 style="text-align: left;">ACTIVOS (1000)</h4></td></tr>
+  </tr-->
+  <!--td><p class="subtitulos">Activos Corrientes</p></td-->
+    <tr>
+       <td class="table-account">
+          <a class="plus-icons no-print" onclick="addRow(2, 'assets')"></a>
+          <!--input type="text" value="Ingreso por Ventas" onchange="setValue(this, 2, 'assets', 'account_name')"-->
+          <label for="">Ingreso por Ventas  </label>
+        </td>
+        <td class="text-right">
+          <input type="number" class="text-right font-variant" id="ubv1" value="0" placeholder="0.00" onchange="setValue(this, 2, 'assets', 'value')">
+          <a class="delete-row no-print" onclick="deleteTableRow(2, 'assets', false)"></a>
+        </td>
+      </tr>
+      <tr>
+        
+        <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(3, 'assets')"></a>
+            <!--input type="text" value="Menos: Costo de los Bienes Vendidos" onchange="setValue(this, 3, 'assets', 'account_name')"-->
+            <label for="">Costo de los Bienes Vendidos  </label>
+          </td>
+          <td class="text-right">
+          <input type="number" class="text-right font-variant" id="ubv2" value="0" placeholder="0.00" onchange="setValue(this, 3, 'assets', 'value')">
+          <a class="delete-row no-print" onclick="deleteTableRow(3, 'assets', true)"></a>
+        </td>
+      </tr>
+      <tr class="section-line"><td colspan="3"><hr></td></tr>
+      <tr>
+        <td class="table-account font-weight-600" style="font-style: oblique;">Utilidad Bruta</td><td></td><td class="text-right">
+          <span>$</span>
+          <input type="number" class="text-right total font-variant" id="totalub" value="0" placeholder="0.00" readonly="">
+        </td>
+      </tr>
+      <tr class="section-line"><td colspan="3"><hr></td></tr></tbody><br><br>
+      <br>
+      <td><p class="subtitulos">Menos: Gastos Operativos</p></td><br>
+      <tr>
+        <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(7, 'assets')"></a>
+            <!--input type="text" value="Gastos de Ventas" onchange="setValue(this, 7, 'assets', 'account_name')"-->
+            <label for="">Gastos de Ventas</label>
+          </td>
+        <td class="text-right">
+          <input type="number" class="text-right font-variant" id="gv1" value="0" placeholder="0.00" onchange="setValue(this, 7, 'assets', 'value')">
+        <a class="delete-row no-print" onclick="deleteTableRow(7, 'assets', false)"></a>
+        </td>
+      </tr>
+      <tr>
+       <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(8, 'assets')"></a>
+            <!--input type="text" value="Gastos Generales y Administrativos" onchange="setValue(this, 8, 'assets', 'account_name')"-->
+            <label for="">Gastos Generales y Administrativos</label>
+          </td>
+          <td class="text-right">
+          <input type="number" class="text-right font-variant" id="gv2" value="0" placeholder="0.00" onchange="setValue(this, 8, 'assets', 'value')">
+          <a class="delete-row no-print" onclick="deleteTableRow(8, 'assets', true)"></a>
+        </td>
+      </tr>
+      <tr>
+        <td class="table-account">
+            <a class="plus-icons no-print" onclick="addRow(9, 'assets')"></a>
+            <!--input type="text" value="Gastos por Depreciación" onchange="setValue(this, 9, 'assets', 'account_name')"-->
+            <label for="">Gastos por Depreciación</label>
+          </td><td class="text-right">
+          <input type="number" class="text-right font-variant" id="gv3" value="0" placeholder="0.00" onchange="setValue(this, 9, 'assets', 'value')">
+          <a class="delete-row no-print" onclick="deleteTableRow(9, 'assets', true)"></a>
+        </td>
+      </tr>
+      <tr>
+        <td class="table-account font-weight-600" style="font-style: oblique;">Total de Gastos Operativos</td><td></td><td class="text-right">
+          <span>$</span>
+          <input type="number" class="text-right total font-variant" id="totalgo" value="0" placeholder="0.00" readonly="">
+        </td>
+      </tr>
+      <tr class="section-line"><td colspan="3"><hr></td></tr>
+      <tr>
+        <td class="table-account font-weight-600" style="font-style: oblique;">Utilidad Operativa</td><td></td><td class="text-right">
+          <span>$</span>
+          <input type="number" class="text-right total font-variant" id="totaluo" value="0" placeholder="0.00" readonly="">
+        </td>
+      </tr>
+      <tr class="section-line"><td colspan="3"><hr></td></tr></tbody><br><br>
+      
+      <tr>
+        <td class="table-account font-weight-600">Menos: Gastos por Intereses</td><td class="text-right">
+          <input type="number" class="text-right total font-variant" id="totalgi" value="0" placeholder="0.00" onchange="setValue(this, 10, 'assets', 'value')">
+        </td>
+      </tr><br><br>
+      <tr class="section-line"><td colspan="3"><hr></td></tr>
+      <tr>
+        <td class="table-account font-weight-600" style="font-style: oblique;">Utilidad neta antes de Impuestos</td><td></td><td class="text-right">
+          <span>$</span>
+          <input type="number" class="text-right total font-variant" id="totaluna" value="0" placeholder="0.00" readonly="">
+        </td>
+      </tr>
+      <tr class="section-line"><td colspan="3"><hr></td></tr></tbody><br><br>
+      
+      <tr>
+        <td class="table-account font-weight-600">Menos: Impuestos</td><td class="text-right">
+          <input type="number" class="text-right total font-variant" id="totalitbms" value="0" placeholder="0.00" onchange="setValue(this, 11, 'assets', 'value')">
+        </td>
+      </tr>
+      
+      <tr class="section-line"><td colspan="3"><hr></td></tr>
+      <tr>
+        <td class="table-account font-weight-600" style="font-style: oblique;">Utilidad neta despues de Impuestos</td><td></td><td class="text-right">
+          <span>$</span>
+          <input type="number" class="text-right total font-variant" id="totalund" value="0" placeholder="0.00" readonly="">
+        </td>
+      </tr>
+      <tr class="section-line"><td colspan="3"><hr></td></tr></tbody><br><br>
+      
+
+      
+    </table>
+
+    
+            </div>
+            <div class="no-print w-35 align-center" style="text-align: center; margin-top: 2%;">
+              <button type="button" id="btnresult" class="print-btn" onclick="generar()" value="Calcular">
+                
+                  
+                    Calcular Estado de Resultado
+                  
+                
+              </button>
+            </div>
+          </form>
+
+    </div>
+
+    <script>
+      function generar(){
+        var ub1 = Number(document.getElementById('ubv1').value);
+        var ub2 = Number(document.getElementById('ubv2').value);
+
+        var ubres = ub1 - ub2;
+
+        document.getElementById('totalub').value = ubres;
+
+        var g1 = Number(document.getElementById('gv1').value);
+        var g2 = Number(document.getElementById('gv2').value);
+        var g3 = Number(document.getElementById('gv3').value);
+
+        var gres = g1 + g2 + g3;
+
+        document.getElementById('totalgo').value = gres;
+
+        var resuo = ubres - gres;
+
+        document.getElementById('totaluo').value = resuo;
+
+         var gi = Number(document.getElementById('totalgi').value);
+
+         var unant = resuo - gi;
+
+         document.getElementById('totalgi').value = gi;
+
+        document.getElementById('totaluna').value = unant;
+
+         var imp = unant;
+         var itbms = 0.07;
+
+         var impuestos = Number((imp * itbms).toFixed(2));
+
+         document.getElementById('totalitbms').value = impuestos;
+
+
+         var utdi = unant - impuestos;
+         document.getElementById('totalund').value = utdi;
+      }
+    </script>
+</body>
+</html>
